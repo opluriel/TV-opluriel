@@ -1,113 +1,280 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>IPTV Player</title>
-<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
-<style>
-:root{--bg:#f6f6f4;--panel:#fff;--text:#1b1b1b;--muted:#6b6b6b;--line:#e3e3df;--accent:#d9480f}
-@media (prefers-color-scheme:dark){:root{--bg:#121212;--panel:#1c1c1c;--text:#eee;--muted:#999;--line:#2c2c2c;--accent:#ff8a4c}}
-*{box-sizing:border-box}
-body{margin:0;font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column}
-header{display:flex;gap:8px;padding:10px;background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap;align-items:center}
-header h1{font-size:16px;margin:0 8px 0 0}
-input,select,button{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text)}
-input{flex:1;min-width:160px}
-button{cursor:pointer}
-button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
-main{flex:1;display:grid;grid-template-columns:minmax(0,1fr) 380px;min-height:0}
-#stage{display:flex;flex-direction:column;padding:12px;gap:8px;min-width:0}
-video{width:100%;max-height:75vh;background:#000;border-radius:10px}
-#now{font-weight:600}
-#status{color:var(--muted);font-size:13px}
-#list{overflow-y:auto;border-left:1px solid var(--line);background:var(--panel)}
-.ch{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--line);cursor:pointer}
-.ch:hover,.ch.active{background:var(--bg)}
-.ch.active{border-left:3px solid var(--accent)}
-.ch img{width:36px;height:36px;object-fit:contain;border-radius:6px;background:#fff}
-.ch .n{flex:1;min-width:0}
-.ch .n b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:14px}
-.ch .n small{color:var(--muted)}
-.fav{border:none;background:none;font-size:18px;padding:2px 6px;color:var(--muted)}
-.fav.f{color:var(--accent)}
-#count{padding:8px 12px;color:var(--muted);font-size:12px}
-@media(max-width:800px){main{grid-template-columns:1fr;grid-template-rows:auto 1fr}#list{border-left:0;border-top:1px solid var(--line)}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TV Opluriel </title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
+  <style>
+    :root {
+      --bg: #f6f6f4;
+      --panel: #fff;
+      --text: #1b1b1b;
+      --muted: #6b6b6b;
+      --line: #e3e3df;
+      --accent: #d9480f
+    }
+
+    @media (prefers-color-scheme:dark) {
+      :root {
+        --bg: #121212;
+        --panel: #1c1c1c;
+        --text: #eee;
+        --muted: #999;
+        --line: #2c2c2c;
+        --accent: #ff8a4c
+      }
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column
+    }
+
+    header {
+      display: flex;
+      gap: 8px;
+      padding: 10px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      flex-wrap: wrap;
+      align-items: center
+    }
+
+    header h1 {
+      font-size: 16px;
+      margin: 0 8px 0 0
+    }
+
+    input,
+    select,
+    button {
+      font: inherit;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text)
+    }
+
+    input {
+      flex: 1;
+      min-width: 160px
+    }
+
+    button {
+      cursor: pointer
+    }
+
+    button.on {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent)
+    }
+
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 380px;
+      min-height: 0
+    }
+
+    #stage {
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      gap: 8px;
+      min-width: 0
+    }
+
+    video {
+      width: 100%;
+      max-height: 75vh;
+      background: #000;
+      border-radius: 10px
+    }
+
+    #now {
+      font-weight: 600
+    }
+
+    #status {
+      color: var(--muted);
+      font-size: 13px
+    }
+
+    #list {
+      overflow-y: auto;
+      border-left: 1px solid var(--line);
+      background: var(--panel)
+    }
+
+    .ch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer
+    }
+
+    .ch:hover,
+    .ch.active {
+      background: var(--bg)
+    }
+
+    .ch.active {
+      border-left: 3px solid var(--accent)
+    }
+
+    .ch img {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      border-radius: 6px;
+      background: #fff
+    }
+
+    .ch .n {
+      flex: 1;
+      min-width: 0
+    }
+
+    .ch .n b {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 14px
+    }
+
+    .ch .n small {
+      color: var(--muted)
+    }
+
+    .fav {
+      border: none;
+      background: none;
+      font-size: 18px;
+      padding: 2px 6px;
+      color: var(--muted)
+    }
+
+    .fav.f {
+      color: var(--accent)
+    }
+
+    #count {
+      padding: 8px 12px;
+      color: var(--muted);
+      font-size: 12px
+    }
+
+    @media(max-width:800px) {
+      main {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr
+      }
+
+      #list {
+        border-left: 0;
+        border-top: 1px solid var(--line)
+      }
+    }
+  </style>
 </head>
+
 <body>
-<header>
-  <h1>📺 IPTV Player</h1>
-  <input id="q" type="search" placeholder="Rechercher une chaîne…">
-  <select id="grp"><option value="">Toutes catégories</option></select>
-  <button id="favBtn">★ Favoris</button>
-</header>
-<main>
-  <section id="stage">
-    <video id="v" controls autoplay playsinline></video>
-    <div id="now">Choisissez une chaîne</div>
-    <div id="status">Chargement de la playlist…</div>
-  </section>
-  <aside id="list"><div id="count"></div><div id="items"></div></aside>
-</main>
-<script>
-const URL_M3U="https://iptv-org.github.io/iptv/index.m3u";
-let channels=[],favs=new Set(),onlyFav=false,hls=null,current=null;
-try{favs=new Set(JSON.parse(localStorage.getItem("favs")||"[]"))}catch(e){}
-const $=id=>document.getElementById(id);
+  <header>
+    <h1>📺 TV Opluriel </h1>
+    <input id="q" type="search" placeholder="Rechercher une chaîne…">
+    <select id="grp">
+      <option value="">Toutes catégories</option>
+    </select>
+    <button id="favBtn">★ Favoris</button>
+  </header>
+  <main>
+    <section id="stage">
+      <video id="v" controls autoplay playsinline></video>
+      <div id="now">Choisissez une chaîne</div>
+      <div id="status">Chargement de la playlist…</div>
+    </section>
+    <aside id="list">
+      <div id="count"></div>
+      <div id="items"></div>
+    </aside>
+  </main>
+  <script>
+    const URL_M3U = "https://iptv-org.github.io/iptv/index.m3u";
+    let channels = [], favs = new Set(), onlyFav = false, hls = null, current = null;
+    try { favs = new Set(JSON.parse(localStorage.getItem("favs") || "[]")) } catch (e) { }
+    const $ = id => document.getElementById(id);
 
-function parse(txt){
-  const out=[],lines=txt.split(/\r?\n/);
-  for(let i=0;i<lines.length;i++){
-    const l=lines[i];
-    if(!l.startsWith("#EXTINF"))continue;
-    const attr=k=>(l.match(new RegExp(k+'="([^"]*)"'))||[])[1]||"";
-    const name=l.slice(l.lastIndexOf(",")+1).trim();
-    let j=i+1;while(j<lines.length&&(lines[j].startsWith("#")||!lines[j].trim()))j++;
-    const url=(lines[j]||"").trim();
-    if(url.startsWith("http"))out.push({name,url,logo:attr("tvg-logo"),group:attr("group-title")||"Autres"});
-  }
-  return out;
-}
-function render(){
-  const q=$("q").value.toLowerCase(),g=$("grp").value;
-  const res=channels.filter(c=>(!g||c.group.split(";").includes(g))&&(!onlyFav||favs.has(c.url))&&c.name.toLowerCase().includes(q));
-  $("count").textContent=res.length+" chaîne(s)";
-  const frag=document.createDocumentFragment();
-  res.slice(0,500).forEach(c=>{
-    const d=document.createElement("div");
-    d.className="ch"+(current&&current.url===c.url?" active":"");
-    d.innerHTML=`<img loading="lazy" alt="" src="${c.logo}" onerror="this.style.visibility='hidden'"><div class="n"><b></b><small></small></div><button class="fav ${favs.has(c.url)?"f":""}">★</button>`;
-    d.querySelector("b").textContent=c.name;
-    d.querySelector("small").textContent=c.group;
-    d.onclick=()=>play(c);
-    d.querySelector(".fav").onclick=e=>{e.stopPropagation();favs.has(c.url)?favs.delete(c.url):favs.add(c.url);
-      try{localStorage.setItem("favs",JSON.stringify([...favs]))}catch(_){}render()};
-    frag.appendChild(d);
-  });
-  $("items").replaceChildren(frag);
-}
-function play(c){
-  current=c;$("now").textContent=c.name;$("status").textContent="Connexion au flux…";
-  const v=$("v");
-  if(hls){hls.destroy();hls=null}
-  if(window.Hls&&Hls.isSupported()){
-    hls=new Hls();hls.loadSource(c.url);hls.attachMedia(v);
-    hls.on(Hls.Events.MANIFEST_PARSED,()=>{v.play().catch(()=>{});$("status").textContent="Lecture en cours"});
-    hls.on(Hls.Events.ERROR,(_,d)=>{if(d.fatal)$("status").textContent="Flux indisponible (hors ligne, géo-bloqué ou bloqué par CORS). Essayez une autre chaîne."});
-  }else{v.src=c.url;v.play().catch(()=>{});$("status").textContent="Lecture en cours"}
-  render();
-}
-$("q").oninput=render;$("grp").onchange=render;
-$("favBtn").onclick=e=>{onlyFav=!onlyFav;e.target.classList.toggle("on",onlyFav);render()};
+    function parse(txt) {
+      const out = [], lines = txt.split(/\r?\n/);
+      for (let i = 0; i < lines.length; i++) {
+        const l = lines[i];
+        if (!l.startsWith("#EXTINF")) continue;
+        const attr = k => (l.match(new RegExp(k + '="([^"]*)"')) || [])[1] || "";
+        const name = l.slice(l.lastIndexOf(",") + 1).trim();
+        let j = i + 1; while (j < lines.length && (lines[j].startsWith("#") || !lines[j].trim())) j++;
+        const url = (lines[j] || "").trim();
+        if (url.startsWith("http")) out.push({ name, url, logo: attr("tvg-logo"), group: attr("group-title") || "Autres" });
+      }
+      return out;
+    }
+    function render() {
+      const q = $("q").value.toLowerCase(), g = $("grp").value;
+      const res = channels.filter(c => (!g || c.group.split(";").includes(g)) && (!onlyFav || favs.has(c.url)) && c.name.toLowerCase().includes(q));
+      $("count").textContent = res.length + " chaîne(s)";
+      const frag = document.createDocumentFragment();
+      res.slice(0, 500).forEach(c => {
+        const d = document.createElement("div");
+        d.className = "ch" + (current && current.url === c.url ? " active" : "");
+        d.innerHTML = `<img loading="lazy" alt="" src="${c.logo}" onerror="this.style.visibility='hidden'"><div class="n"><b></b><small></small></div><button class="fav ${favs.has(c.url) ? "f" : ""}">★</button>`;
+        d.querySelector("b").textContent = c.name;
+        d.querySelector("small").textContent = c.group;
+        d.onclick = () => play(c);
+        d.querySelector(".fav").onclick = e => {
+          e.stopPropagation(); favs.has(c.url) ? favs.delete(c.url) : favs.add(c.url);
+          try { localStorage.setItem("favs", JSON.stringify([...favs])) } catch (_) { } render()
+        };
+        frag.appendChild(d);
+      });
+      $("items").replaceChildren(frag);
+    }
+    function play(c) {
+      current = c; $("now").textContent = c.name; $("status").textContent = "Connexion au flux…";
+      const v = $("v");
+      if (hls) { hls.destroy(); hls = null }
+      if (window.Hls && Hls.isSupported()) {
+        hls = new Hls(); hls.loadSource(c.url); hls.attachMedia(v);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => { v.play().catch(() => { }); $("status").textContent = "Lecture en cours" });
+        hls.on(Hls.Events.ERROR, (_, d) => { if (d.fatal) $("status").textContent = "Flux indisponible (hors ligne, géo-bloqué ou bloqué par CORS). Essayez une autre chaîne." });
+      } else { v.src = c.url; v.play().catch(() => { }); $("status").textContent = "Lecture en cours" }
+      render();
+    }
+    $("q").oninput = render; $("grp").onchange = render;
+    $("favBtn").onclick = e => { onlyFav = !onlyFav; e.target.classList.toggle("on", onlyFav); render() };
 
-fetch(URL_M3U).then(r=>r.text()).then(t=>{
-  channels=parse(t);
-  const gs=new Set();channels.forEach(c=>c.group.split(";").forEach(x=>gs.add(x)));
-  [...gs].sort().forEach(x=>{const o=document.createElement("option");o.value=o.textContent=x;$("grp").appendChild(o)});
-  $("status").textContent=channels.length+" chaînes chargées";
-  render();
-}).catch(e=>{$("status").textContent="Erreur de chargement : "+e.message});
-</script>
+    fetch(URL_M3U).then(r => r.text()).then(t => {
+      channels = parse(t);
+      const gs = new Set(); channels.forEach(c => c.group.split(";").forEach(x => gs.add(x)));
+      [...gs].sort().forEach(x => { const o = document.createElement("option"); o.value = o.textContent = x; $("grp").appendChild(o) });
+      $("status").textContent = channels.length + " chaînes chargées";
+      render();
+    }).catch(e => { $("status").textContent = "Erreur de chargement : " + e.message });
+  </script>
 </body>
+
 </html>

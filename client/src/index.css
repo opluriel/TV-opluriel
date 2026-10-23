@@ -108,10 +108,8 @@ button:focus-visible,
   height: 38px;
   place-items: center;
   border-radius: 13px;
-  background: var(--accent);
   color: #fff;
   font-size: 19px;
-  box-shadow: 0 7px 16px rgb(223 91 56 / 24%);
 }
 
 .search-wrap {
@@ -332,7 +330,7 @@ video {
     transform 140ms ease;
 }
 
-.ch + .ch {
+.ch+.ch {
   margin-top: 2px;
 }
 
@@ -667,6 +665,7 @@ body:has(#stage.cinema-mode) {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {

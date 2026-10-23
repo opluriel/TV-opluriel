@@ -17,9 +17,13 @@ export default function Header({
 }: HeaderProps) {
   return (
     <header className="app-header">
-      <h1 className="brand">
+      {/* <h1 className="brand">
         <span className="brand-mark" aria-hidden="true">▶</span>
-        <span>IPTV Player</span>
+        <span>TV Opluriel </span>
+      </h1> */}
+      <h1 className="brand">
+        <img className="brand-mark" src="./assets/tv-opluriel-dark.svg" alt="" aria-hidden="true" />
+        <span>TV Opluriel </span>
       </h1>
       <label className="search-wrap">
         <span className="visually-hidden">Rechercher une chaîne</span>
